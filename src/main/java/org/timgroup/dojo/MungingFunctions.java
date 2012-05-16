@@ -2,9 +2,9 @@ package org.timgroup.dojo;
 
 import java.util.regex.Pattern;
 
-import static java.lang.Integer.parseInt;
-
 import fj.F;
+
+import static java.lang.Integer.parseInt;
 
 public class MungingFunctions {
 
@@ -21,7 +21,7 @@ public class MungingFunctions {
             
             @Override
             public Range f(String a) {
-                final String[] cells = a.split("[^\\d]+");
+                final String[] cells = a.split("[^\\w]+");
                 return new Range(cells[labelColumn], parseInt(cells[leftColumn]), parseInt(cells[rightColumn]));
             }
         };

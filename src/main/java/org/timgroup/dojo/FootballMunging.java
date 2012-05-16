@@ -1,5 +1,6 @@
 package org.timgroup.dojo;
 
+import fj.Ord;
 import fj.data.Stream;
 
 public class FootballMunging {
@@ -11,6 +12,9 @@ public class FootballMunging {
     }
 
     public String teamWithSmallestDifferenceBetweenForAndAgainst() {
-        return "";
+        return lines.filter(MungingFunctions.isDataLine)
+                .map(MungingFunctions.toRange(2, 7, 8))
+                .foldLeft1(Ord.<Range>comparableOrd().min)
+                .label;
     }
 }

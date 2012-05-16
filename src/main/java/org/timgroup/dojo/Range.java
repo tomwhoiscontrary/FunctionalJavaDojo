@@ -14,7 +14,7 @@ public class Range implements Comparable<Range> {
     }
     
     private int difference() {
-        return left - right;
+        return Math.abs(left - right);
     }
 
     @Override
