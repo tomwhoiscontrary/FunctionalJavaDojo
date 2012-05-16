@@ -3,6 +3,7 @@ package org.timgroup.dojo;
 import java.util.regex.Pattern;
 
 import fj.F;
+import fj.Ord;
 import fj.data.Stream;
 
 import static java.lang.Integer.parseInt;
@@ -10,15 +11,25 @@ import static java.lang.Integer.parseInt;
 public class WeatherMunging {
     private final Stream<String> lines;
     
-    public static class Day {
+    public static class Day implements Comparable<Day> {
 
         public int number;
         public int maxTemp;
         public int minTemp;
+        
         public Day(int number, int maxTemp, int minTemp) {
             this.number = number;
             this.maxTemp = maxTemp;
             this.minTemp = minTemp;
+        }
+        
+        private int tempDifference() {
+            return maxTemp - minTemp;
+        }
+
+        @Override
+        public int compareTo(Day d) {
+            return Integer.valueOf(tempDifference()).compareTo(d.tempDifference());
         }
     };
     
@@ -44,9 +55,10 @@ public class WeatherMunging {
     }
 
     public int dayWithTheSmallestTemperatureSpread() {
-        final Stream<String> dataLines = lines.filter(isDataLine);
-        Stream<Day> days = dataLines.map(toDay);
-        return 0;
+        return lines.filter(isDataLine)
+                     .map(toDay)
+                     .foldLeft1(Ord.<Day>comparableOrd().min)
+                     .number;
     }
 
 }
