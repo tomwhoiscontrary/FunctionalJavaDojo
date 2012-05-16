@@ -1,7 +1,7 @@
 package org.timgroup.dojo;
 
 import org.junit.Test;
-import org.timgroup.dojo.WeatherMunging.Day;
+import org.timgroup.dojo.WeatherMunging.Range;
 
 import fj.data.Stream;
 
@@ -26,18 +26,18 @@ public class WeatherMungingTest {
     
     @Test public void
     parses_data_lines() {
-        Day day = WeatherMunging.toDay.f("   1  88    59    74          53.8       0.00 F       280  9.6 270  17  1.6  93 23 1004.5");
-        assertEquals(1, day.number);
-        assertEquals(88, day.maxTemp);
-        assertEquals(59, day.minTemp);
+        Range day = WeatherMunging.toRange.f("   1  88    59    74          53.8       0.00 F       280  9.6 270  17  1.6  93 23 1004.5");
+        assertEquals(1, day.label);
+        assertEquals(88, day.left);
+        assertEquals(59, day.right);
     }
 
     @Test public void
     parses_data_lines_with_asterisks() {
-        Day day = WeatherMunging.toDay.f("   9  86    32*   59       6  61.5       0.00         240  7.6 220  12  6.0  78 46 1018.6");
-        assertEquals(9, day.number);
-        assertEquals(86, day.maxTemp);
-        assertEquals(32, day.minTemp);
+        Range day = WeatherMunging.toRange.f("   9  86    32*   59       6  61.5       0.00         240  7.6 220  12  6.0  78 46 1018.6");
+        assertEquals(9, day.label);
+        assertEquals(86, day.left);
+        assertEquals(32, day.right);
     }
 
     @Test

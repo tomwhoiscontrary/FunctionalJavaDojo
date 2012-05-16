@@ -11,34 +11,34 @@ import static java.lang.Integer.parseInt;
 public class WeatherMunging {
     private final Stream<String> lines;
     
-    public static class Day implements Comparable<Day> {
+    public static class Range implements Comparable<Range> {
 
-        public int number;
-        public int maxTemp;
-        public int minTemp;
+        public int label;
+        public int left;
+        public int right;
         
-        public Day(int number, int maxTemp, int minTemp) {
-            this.number = number;
-            this.maxTemp = maxTemp;
-            this.minTemp = minTemp;
+        public Range(int label, int left, int right) {
+            this.label = label;
+            this.left = left;
+            this.right = right;
         }
         
-        private int tempDifference() {
-            return maxTemp - minTemp;
+        private int difference() {
+            return left - right;
         }
 
         @Override
-        public int compareTo(Day d) {
-            return Integer.valueOf(tempDifference()).compareTo(d.tempDifference());
+        public int compareTo(Range d) {
+            return Integer.valueOf(difference()).compareTo(d.difference());
         }
     };
     
-    public static final F<String, Day> toDay = new F<String, WeatherMunging.Day>() {
+    public static final F<String, Range> toRange = new F<String, WeatherMunging.Range>() {
 
         @Override
-        public Day f(String a) {
+        public Range f(String a) {
             final String[] cells = a.split("[^\\d]+");
-            return new Day(parseInt(cells[1]), parseInt(cells[2]), parseInt(cells[3]));
+            return new Range(parseInt(cells[1]), parseInt(cells[2]), parseInt(cells[3]));
         }
     };
     
@@ -56,9 +56,9 @@ public class WeatherMunging {
 
     public int dayWithTheSmallestTemperatureSpread() {
         return lines.filter(isDataLine)
-                     .map(toDay)
-                     .foldLeft1(Ord.<Day>comparableOrd().min)
-                     .number;
+                     .map(toRange)
+                     .foldLeft1(Ord.<Range>comparableOrd().min)
+                     .label;
     }
 
 }
